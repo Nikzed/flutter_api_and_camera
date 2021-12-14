@@ -25,53 +25,117 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
+        body: Stack(
           children: [
-            const SizedBox(height: 120),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Мийки',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+            Container(
+              width: double.infinity,
+              height: 450,
+              decoration: const BoxDecoration(
+                color: Color(0xffECF3F9),
+                image: DecorationImage(
+                  image: AssetImage('assets/background_car_washer.png'),
+                  // fit: BoxFit.cover,
                 ),
-                const SizedBox(width: 5),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Container(
-                    alignment: Alignment.center,
-                    color: Colors.blue,
-                    height: 40,
-                    width: 50,
-                    child: const Text(
-                      '24',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 120),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Мийки',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      const SizedBox(width: 5),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(
+                          alignment: Alignment.center,
+                          color: Colors.blue,
+                          height: 40,
+                          width: 50,
+                          child: const Text(
+                            '24',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40),
+                    child: Text(
+                      'Сплачуй на різних мийках самооблуговування одним додатком зі знижками',
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              child: Text(
-                'Сплачуй на різних мийках самооблуговування одним додатком зі знижками',
-                textAlign: TextAlign.center,
+                  const SizedBox(height: 200),
+                ],
               ),
             ),
-            const SizedBox(height: 200),
-            Stack(
-              children: const [],
+            Padding(
+              padding: const EdgeInsets.only(top: 440),
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 20),
+                    Text(
+                      'Увійти / Зареєструватись',
+                      style: TextStyle(
+                        color: Color(0xff99879D),
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(height: 40),
+                    Container(
+                      height: 40,
+                      padding: EdgeInsets.symmetric(horizontal: 50),
+                      color: Colors.green,
+                      child: const TextField(
+                        // autofillHints: 'hent text',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
+
+            // Expanded(
+            //   child: ClipRRect(
+            //     borderRadius: BorderRadius.circular(20),
+            //     child: Container(
+            //       width: double.infinity,
+            //       color: Colors.green,
+            //       child: Stack(
+            //         children: [
+            //           Text('data'),
+            //           Column(
+            //             children: const [Text('hello'), Text('world!')],
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
