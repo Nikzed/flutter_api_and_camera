@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 
 void main() {
   runApp(const MyApp());
@@ -97,23 +98,55 @@ class MyApp extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'Увійти / Зареєструватись',
                       style: TextStyle(
                         color: Color(0xff99879D),
                         fontSize: 18,
                       ),
                     ),
-                    SizedBox(height: 40),
-                    Container(
-                      height: 40,
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      color: Colors.green,
-                      child: const TextField(
-                        // autofillHints: 'hent text',
+                    const SizedBox(height: 40),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Container(
+                          height: 50,
+                          width: double.infinity,
+                          // padding: const EdgeInsets.only(left: 20),
+                          color: const Color(0xffECF3F9),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 110,
+                                // color: Colors.black,
+                                child: CountryCodePicker(
+                                  onChanged: print,
+                                  // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                                  initialSelection: '+380',
+                                  favorite: const ['+380','+7'],
+                                  // optional. Shows only country name and flag
+                                  showCountryOnly: false,
+                                  // optional. Shows only country name and flag when popup is closed.
+                                  showOnlyCountryWhenClosed: false,
+                                  // optional. aligns the flag and the Text left
+                                  alignLeft: false,
+                                ),
+                              ),
+                              const Expanded(
+                                child: TextField(
+                                  keyboardType: TextInputType.phone,
+                                ),
+                              ),
+
+
+                            ],
+                          ),
+                        ),
                       ),
                     ),
+
                   ],
                 ),
               ),
