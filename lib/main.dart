@@ -1,36 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final _phoneMask = MaskTextInputFormatter(
+    mask: '(##) ### ## ##',
+    filter: {"#": RegExp(r'[0-9]')},
+  );
 
-  // This widget is the root of your application.
+  final _messengerKey = GlobalKey<ScaffoldMessengerState>();
+
+  MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+      scaffoldMessengerKey: _messengerKey,
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
             Container(
               width: double.infinity,
-              height: 450,
+              height: 420,
               decoration: const BoxDecoration(
                 color: Color(0xffECF3F9),
                 image: DecorationImage(
@@ -40,7 +37,7 @@ class MyApp extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  const SizedBox(height: 120),
+                  const SizedBox(height: 100),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -56,7 +53,7 @@ class MyApp extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                         child: Container(
                           alignment: Alignment.center,
-                          color: Colors.blue,
+                          color: const Color(0xff00B7F1),
                           height: 40,
                           width: 50,
                           child: const Text(
@@ -79,12 +76,12 @@ class MyApp extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 200),
+                  // const SizedBox(height: 200),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 440),
+              padding: const EdgeInsets.only(top: 400),
               child: Container(
                 width: double.infinity,
                 height: double.infinity,
@@ -102,15 +99,16 @@ class MyApp extends StatelessWidget {
                     const Text(
                       'Увійти / Зареєструватись',
                       style: TextStyle(
-                        color: Color(0xff99879D),
-                        fontSize: 18,
-                      ),
+                          color: Color(0xff99879D),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.3),
                     ),
                     const SizedBox(height: 40),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(20),
                         child: Container(
                           height: 50,
                           width: double.infinity,
@@ -123,140 +121,162 @@ class MyApp extends StatelessWidget {
                                 // color: Colors.black,
                                 child: CountryCodePicker(
                                   onChanged: print,
-                                  // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
                                   initialSelection: '+380',
-                                  favorite: const ['+380','+7'],
-                                  // optional. Shows only country name and flag
+                                  favorite: const ['+380', '+7'],
                                   showCountryOnly: false,
-                                  // optional. Shows only country name and flag when popup is closed.
                                   showOnlyCountryWhenClosed: false,
-                                  // optional. aligns the flag and the Text left
                                   alignLeft: false,
                                 ),
                               ),
-                              const Expanded(
+                              Expanded(
                                 child: TextField(
                                   keyboardType: TextInputType.phone,
+                                  inputFormatters: [_phoneMask],
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Введіть номер телефону',
+                                    hintStyle: TextStyle(
+                                      color: Color(0xff99879D),
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
                                 ),
                               ),
-
-
                             ],
                           ),
                         ),
                       ),
                     ),
-
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 45,
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text(
+                            'Далі',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            elevation: MaterialStateProperty.all<double>(5),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xff06C975),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-
-            // Expanded(
-            //   child: ClipRRect(
-            //     borderRadius: BorderRadius.circular(20),
-            //     child: Container(
-            //       width: double.infinity,
-            //       color: Colors.green,
-            //       child: Stack(
-            //         children: [
-            //           Text('data'),
-            //           Column(
-            //             children: const [Text('hello'), Text('world!')],
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const Text(
+                    'Виникли труднощі?',
+                    style: TextStyle(
+                      color: Color(0xff99879D),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      // letterSpacing: 0.0,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    height: 70,
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: Color(0xff00B7F1),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap: () => {
+                            _messengerKey.currentState?.showSnackBar(
+                              const SnackBar(
+                                content: Text('Допомога ще у розробці'),
+                              ),
+                            ),
+                          },
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                WidgetSpan(
+                                  child: SizedBox(
+                                    width: 50,
+                                    child: SvgPicture.asset(
+                                      'assets/headphones.svg',
+                                    ),
+                                  ),
+                                ),
+                                const TextSpan(text: 'Допомога'),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 0,
+                          child: Text(
+                            '|',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 42,
+                              fontWeight: FontWeight.w100
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () => {
+                            _messengerKey.currentState?.showSnackBar(
+                              const SnackBar(
+                                content: Text('Питання теж ще у розробці..'),
+                              ),
+                            ),
+                          },
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                WidgetSpan(
+                                  child: SizedBox(
+                                    width: 50,
+                                    child: SvgPicture.asset(
+                                      'assets/question.svg',
+                                    ),
+                                  ),
+                                ),
+                                const TextSpan(text: 'Питання'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
