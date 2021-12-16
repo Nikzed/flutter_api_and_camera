@@ -2,20 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final _phoneMask = MaskTextInputFormatter(
     mask: '(##) ### ## ##',
     filter: {"#": RegExp(r'[0-9]')},
   );
 
-  final _messengerKey = GlobalKey<ScaffoldMessengerState>();
+  final _phoneController = TextEditingController();
 
-  MyApp({Key? key}) : super(key: key);
+  final _messengerKey = GlobalKey<ScaffoldMessengerState>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +36,11 @@ class MyApp extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              height: 420,
+              height: 370,
               decoration: const BoxDecoration(
                 color: Color(0xffECF3F9),
                 image: DecorationImage(
+                  fit: BoxFit.fitHeight,
                   image: AssetImage('assets/background_car_washer.png'),
                   // fit: BoxFit.cover,
                 ),
@@ -76,12 +86,11 @@ class MyApp extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  // const SizedBox(height: 200),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 400),
+              padding: const EdgeInsets.only(top: 350),
               child: Container(
                 width: double.infinity,
                 height: double.infinity,
@@ -130,6 +139,7 @@ class MyApp extends StatelessWidget {
                               ),
                               Expanded(
                                 child: TextField(
+                                  controller: _phoneController,
                                   keyboardType: TextInputType.phone,
                                   inputFormatters: [_phoneMask],
                                   decoration: const InputDecoration(
@@ -154,7 +164,7 @@ class MyApp extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 40),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: getData,
                           child: const Text(
                             'Далі',
                             style: TextStyle(
@@ -238,10 +248,9 @@ class MyApp extends StatelessWidget {
                           child: Text(
                             '|',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 42,
-                              fontWeight: FontWeight.w100
-                            ),
+                                color: Colors.white,
+                                fontSize: 42,
+                                fontWeight: FontWeight.w100),
                           ),
                         ),
                         InkWell(
@@ -278,5 +287,26 @@ class MyApp extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose(){
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  Future<String> getData() async {
+    print('controller text: ${_phoneController.text}');
+    print(_phoneController.text.replaceAll(RegExp('/[^0-9.]/g'), ''));
+    var uri = 'https://api.moyki24.com.ua/sms/request?phone=0${_phoneController.text.replaceAll( RegExp(''), '')}';
+    http.Response responce = await http.get(
+      Uri.parse(
+        Uri.encodeFull(
+          uri
+        ),
+      ),
+    );
+    print(responce.body);
+    return responce.body;
   }
 }
