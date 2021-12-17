@@ -9,7 +9,6 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -290,23 +289,21 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _phoneController.dispose();
     super.dispose();
   }
 
   Future<String> getData() async {
-    print('controller text: ${_phoneController.text}');
-    print(_phoneController.text.replaceAll(RegExp('/[^0-9.]/g'), ''));
-    var uri = 'https://api.moyki24.com.ua/sms/request?phone=0${_phoneController.text.replaceAll( RegExp(''), '')}';
-    http.Response responce = await http.get(
+    var expression = RegExp("[^0-9]");
+    var uri = 'https://api.moyki24.com.ua/sms/request?phone=0'
+        '${_phoneController.text.replaceAll(expression, '')}';
+    http.Response response = await http.get(
       Uri.parse(
-        Uri.encodeFull(
-          uri
-        ),
+        Uri.encodeFull(uri),
       ),
     );
-    print(responce.body);
-    return responce.body;
+    print(response.body);
+    return response.body;
   }
 }
