@@ -29,7 +29,6 @@ class OtpController extends GetxController {
       'code': sms,
       'token': token,
     });
-    print('Provided body:\n$body');
 
     var response = await http.post(
       Uri.parse(url),
@@ -45,7 +44,6 @@ class OtpController extends GetxController {
           response.body,
         ),
       );
-      print('Received response: ${response.body}');
       Get.offAll(() => const ScanScreen());
     }
   }

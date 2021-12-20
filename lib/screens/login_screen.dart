@@ -192,7 +192,6 @@ class _LoginScreenState extends State<LoginScreen> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const Text(

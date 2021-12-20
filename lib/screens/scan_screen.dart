@@ -1,8 +1,6 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:test_task/constants/constants.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScanScreen extends StatefulWidget {
@@ -13,23 +11,25 @@ class ScanScreen extends StatefulWidget {
 }
 
 class _ScanScreenState extends State<ScanScreen> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  Barcode? result;
-  QRViewController? controller;
+  final GlobalKey _qrKey = GlobalKey(debugLabel: 'QR');
+  Barcode? _result;
+  QRViewController? _controller;
 
   @override
   void reassemble() {
     super.reassemble();
     if (Platform.isAndroid) {
-      controller!.pauseCamera();
+      _controller!.pauseCamera();
     } else if (Platform.isIOS) {
-      controller!.resumeCamera();
+      _controller!.resumeCamera();
     }
+    _controller!.resumeCamera();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Container(
@@ -50,8 +50,8 @@ class _ScanScreenState extends State<ScanScreen> {
                 child: Column(
                   children: [
                     Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 40),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 40),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -96,60 +96,40 @@ class _ScanScreenState extends State<ScanScreen> {
                         height: 300,
                         width: 300,
                         child: QRView(
-                          key: qrKey,
+                          key: _qrKey,
                           onQRViewCreated: _onQRViewCreated,
                         ),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    result != null
+                    _result != null
                         ? Text(
-                            'Barcode Type: ${describeEnum(result!.format)}'
-                                '   Data: ${result!.code}')
+                            'Ви відсканували штрих-код!\n${_result!.code}',
+                            textAlign: TextAlign.center,
+                          )
                         : const Text('Відскануйте штрих-код'),
                   ],
                 ),
               ),
             ),
           ),
-          // Column(
-          //   children: [
-          //     SizedBox(
-          //       height: 500,
-          //       width: double.infinity,
-          //       child: QRView(
-          //         key: qrKey,
-          //         onQRViewCreated: _onQRViewCreated,
-          //       ),
-          //     ),
-          //     Expanded(
-          //       flex: 1,
-          //       child: Center(
-          //         child: (result != null)
-          //             ? Text(
-          //                 'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-          //             : const Text('Scan a code'),
-          //       ),
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     );
   }
 
   void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
+    _controller = controller;
     controller.scannedDataStream.listen((scanData) {
       setState(() {
-        result = scanData;
+        _result = scanData;
       });
     });
   }
 
   @override
   void dispose() {
-    controller?.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 }

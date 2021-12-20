@@ -40,7 +40,6 @@ class LoginController extends GetxController {
         );
         return auth;
       }
-      print('wrong code');
     } catch (e) {
       print('Exception: $e');
     }
@@ -55,10 +54,7 @@ class LoginController extends GetxController {
     Get.deleteAll();
     validate.value = false;
     await fetchAuthRequestModel();
-    // auth = (await fetchAuthRequestModel())!;
-    // Get.put(auth);
     Get.appUpdate();
-    print('auth.token:\n${auth.token}');
     Get.to(() => const OtpScreen());
   }
 }
